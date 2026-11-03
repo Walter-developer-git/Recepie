@@ -1,0 +1,134 @@
+/* ingredient-form.component.scss */
+.ingredient-form {
+  padding: 2rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    margin-bottom: 1.5rem;
+    color: #2c3e50;
+    text-align: center;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+
+      &:focus {
+        outline: none;
+        border-color: #4CAF50;
+        box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+      }
+
+      &.invalid {
+        border-color: #e74c3c;
+      }
+    }
+  }
+
+  .validation-error {
+    color: #e74c3c;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+    height: 1.2rem;
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &-primary {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+
+      &:hover:not(:disabled) {
+        background-color: #3e8e41;
+      }
+
+      &:disabled {
+        background-color: #a5d6a7;
+        cursor: not-allowed;
+      }
+    }
+
+    &-secondary {
+      background-color: transparent;
+      color: #333;
+      border: 1px solid #ddd;
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
+    }
+  }
+
+  .ingredient-form {
+
+  }
+.ingredient-list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f9f9f9;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  .ingredient-info {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+
+    .ingredient-title {
+      color: #333;
+    }
+
+    .ingredient-quantity {
+      color: #666;
+    }
+  }
+
+  button[mat-icon-button] {
+    color: red;
+    border: none;
+    background-color: transparent;
+    mat-icon {
+      font-size: 20px;
+    }
+  }
+}
+
+}
+
+.label-container {
+  display: flex;
+}

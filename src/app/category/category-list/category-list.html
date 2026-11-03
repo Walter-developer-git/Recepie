@@ -1,0 +1,68 @@
+<p-toast></p-toast>
+
+<div class="container">
+    <aside class="sidebar">
+      <h2>فیلتر و جستجو</h2>
+        <form [formGroup]="form" (ngSubmit)="search()">
+            <div class="form-group">
+                <label for="name">عنوان*</label>
+                <input type="text" id="name" formControlName="name" placeholder="جستجوی عنوان">
+            </div>
+            <mat-form-field appearance="outline">
+                <mat-label>مرتب‌سازی</mat-label>
+                <mat-select formControlName="sortOrder">
+                    <mat-option *ngFor="let option of sortOptions" [value]="option.value">
+                        {{ option.label }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button type="submit" class="btn-green">فیلتر</button>
+        </form>
+    </aside>
+    <div class="content-wrapper">
+        <div class="form-actions">
+            @if(userService.isAdmin$ | async) {
+                <button (click)="onSubmit()" class="btn btn-primary">
+                    ساخت دسته بندی
+                </button>
+            }
+        </div>
+        <section class="recipe-grid">
+            <ng-container *ngFor="let item of category$ | async">
+                <div (click)="selectCard(item)" class="recipe-card">
+                    <h4 class="recipe-title">{{ item.name }}</h4>
+                    <div class="card-actions-container">
+                        @if(userService.isAdmin$ | async) {
+                            <button class="btn-icon" (click)="clickCategory($event,item)" aria-label="Edit category">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                        }
+                    </div>
+                </div>
+            </ng-container>
+        </section>
+        <div class="pagination">
+            <button
+                mat-flat-button
+                color="accent"
+                class="pagination-btn"
+                (click)="prevPage()"
+                [disabled]="currentPage === 0"
+            >
+                ◀ قبلی
+            </button>
+            <span class="page-indicator">
+                صفحه :{{ currentPage + 1 }} / {{ totalPages }}
+            </span>
+            <button
+                mat-flat-button
+                color="accent"
+                class="pagination-btn"
+                (click)="nextPage()"
+                [disabled]="(currentPage + 1) == totalPages"
+            >
+                بعدی ▶
+            </button>
+        </div>
+    </div>
+</div>

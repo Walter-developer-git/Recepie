@@ -1,0 +1,45 @@
+<!-- ingredient-form.component.html -->
+<form [formGroup]="ingredientForm" class="ingredient-form">
+  <h2>{{ isEditMode ? 'Edit Tags' : 'Add Tags' }}</h2>
+
+  <div class="form-group">
+    <label for="name">Tags:*</label>
+    <input type="text" id="name" formControlName="name" placeholder="Tags"
+      [class.invalid]="name.invalid && (name.dirty || name.touched)">
+    <div class="validation-error" *ngIf="name.invalid && (name.dirty || name.touched)">
+      <span *ngIf="name.errors?.['required']">Ingredient name is required</span>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+    <button (click)="onSubmit()" type="submit" class="btn btn-primary" [disabled]="ingredientForm.invalid">
+      {{ isEditMode ? 'Update' : 'Add' }} Tags
+    </button>
+  </div>
+
+  <ng-container *ngIf="items.length == 0">
+    <div class="ingredient-list">
+      <div class="ingredient-info">
+        <span class="ingredient-title">Add Tags</span>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="items?.length != 0">
+
+  <ng-container *ngFor="let item of items; let i = index">
+    <div class="ingredient-list">
+      <div class="ingredient-info">
+        <span class="ingredient-quantity">{{ item?.name }}</span>
+      </div>
+      <button (click)="deleteItem(i)" style="border: none;
+    color: red;
+    cursor: pointer;
+    background-color: transparent;" mat-icon-button color="warn" aria-label="Delete Ingredient">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </ng-container>
+  </ng-container>
+</form>

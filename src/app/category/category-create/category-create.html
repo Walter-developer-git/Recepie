@@ -1,0 +1,42 @@
+<!-- recipe-form.component.html -->
+<form [formGroup]="recipeForm" class="recipe-form">
+  <h2>{{ isEditMode ? 'ویرایش دسته‌بندی' : 'ایجاد دسته‌بندی جدید' }}</h2>
+
+  <!-- بخش اطلاعات پایه -->
+  <div class="form-section">
+    <h3>اطلاعات پایه</h3>
+
+    <div class="form-group">
+      <label for="title">عنوان*</label>
+      <input type="text" id="title" formControlName="title">
+      <div class="validation-error" *ngIf="title.invalid && (title.dirty || title.touched)">
+        <span *ngIf="title.errors?.['required']">وارد کردن عنوان دسته‌بندی الزامی است</span>
+      </div>
+    </div>
+
+    <!-- ... سایر محتوای فرم ... -->
+
+    <!-- بخش انتخاب Recipes -->
+    <!-- <div class="form-group"> -->
+      <!-- <mat-form-field appearance="outline">
+        <mat-label>برنامه‌ها</mat-label>
+        <mat-select formControlName="Recipes">
+          <mat-option *ngFor="let item of recipeList$ | async" [value]="item.ID">
+            {{item.title}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field> -->
+    <!-- </div> -->
+
+  </div>
+
+  <!-- عملیات فرم -->
+  <div class="form-actions">
+    @if(isEditMode) {
+      <button (click)="deletecategory()" class="btn btn-danger">حذف دسته‌بندی</button>
+    }
+    <button (click)="onSubmit()" type="submit" class="btn btn-primary">
+      {{ isEditMode ? 'ویرایش دسته‌بندی' : 'ایجاد دسته‌بندی جدید' }}
+    </button>
+  </div>
+</form>

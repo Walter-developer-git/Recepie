@@ -1,0 +1,54 @@
+// ✅ Put all @use at the very top
+@use '@angular/material' as mat;
+
+// @import "primeng/resources/themes/lara-light-blue/theme.css";
+// @import "primeng/resources/primeng.css";
+// @import "primeicons/primeicons.css";
+
+
+form {
+  text-align: end;
+}
+
+html {
+  @include mat.theme((
+    color: (
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+body {
+  color-scheme: light;
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  // font: var(--mat-sys-body-medium);
+  margin: 0;
+      // font-family: 'Roboto';
+
+}
+
+html, body {
+  height: 100%;
+  // font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+input {
+  direction: rtl;
+}
+
+textarea {
+  direction: rtl;
+}
+
+label {
+  float:inline-end
+}
+
+multi-select-autocomplete {
+  float: right;
+}

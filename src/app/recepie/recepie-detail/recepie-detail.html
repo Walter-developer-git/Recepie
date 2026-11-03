@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fa">
+
+<body>
+
+  <main *ngIf="recipe$ | async as recipe" class="container">
+    <p-toast></p-toast>
+
+<!-- rest of your template -->
+
+    <div class="btn-container">
+      @if(this.canModify) {
+        <button (click)="editRecipe()" class="btn btn-primary">ویرایش برنامه غذایی</button>
+        <button (click)="deleteRecipe()" class="btn btn-danger">حذف برنامه غذایی</button>
+      }
+    </div>
+<div class="intro" dir="rtl">
+  <img [src]="imageUrls" alt="Banana Pancakes" class="recipe-img" />
+  <div class="description">
+    <h1>{{ recipe.title }}</h1>
+    <p>
+      {{ recipe.text }}
+    </p>
+    <div>
+      <div class="card flex justify-center" style="margin-bottom: 10%">
+        <p-rating (onRate)="rate($event)" [(ngModel)]="valueRate" />
+      </div>
+    </div>
+    <div class="stats">
+      <div class="container-stats">
+        @if(recipe.is_favorited == true) {
+          <mat-icon class="like-icon" (click)="dislike()" color="warn">favorite</mat-icon>
+        } @else {
+          <mat-icon class="like-icon" (click)="like()" color="warn">favorite_border</mat-icon>
+        }
+        <strong>پسندها:</strong><br>
+        {{ recipe.favorite_count }} بار
+      </div>
+
+      <div class="container-stats">
+        <mat-icon>schedule</mat-icon>
+        <strong>تاریخ ایجاد:</strong><br>
+        {{ recipe.created_at | date:'fullDate' }} {{ recipe.created_at | date:'shortTime' }}
+      </div>
+    </div>
+
+    <div class="tags">
+      <ng-container *ngFor="let item of recipe.tags">
+        <span (click)="filterByTag(item.ID)">
+          {{ item.name }}
+        </span>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+
+    <div class="content">
+      <section class="instructions">
+        <h2>دستور پخت</h2>
+        <ng-container *ngIf="recipe$ | async as recipe">
+          <ng-container *ngFor="let item of recipe.steps">
+            <div class="step">
+              <strong>مرحله {{ item.order }}</strong>
+              <p>{{ item.text }}</p>
+            </div>
+          </ng-container>
+        </ng-container>
+
+      </section>
+
+      <section class="ingredients">
+        <h2>مواد لازم</h2>
+        <ul *ngIf="recipe$ | async as recipe">
+          <li *ngFor="let ing of recipe.ingredients">
+            {{ ing.amount }} × {{ ing.name }}
+          </li>
+        </ul>
+
+      </section>
+
+      <section class="tools">
+        <h2>دسته‌بندی‌ها</h2>
+        <ul *ngIf="recipe$ | async as recipe">
+          <li *ngFor="let item of recipe.categories">
+            <div>
+              <span (click)="filterByCategory(item.ID)" class="category-badge">
+                {{ item.name }}
+              </span>
+            </div>
+          </li>
+        </ul>
+
+      </section>
+    </div>
+  </main>
+    <section class="nutrition">
+  <h2>ارزش غذایی</h2>
+<table class="nutrition-table">
+  <thead>
+    <tr>
+      <th>نام</th>
+      <th>کالری</th>
+      <th>اندازه (گرم)</th>
+      <th>چربی (گرم)</th>
+      <th>چربی اشباع (گرم)</th>
+      <th>پروتئین (گرم)</th>
+      <th>سدیم (میلی‌گرم)</th>
+      <th>پتاسیم (میلی‌گرم)</th>
+      <th>کلسترول (میلی‌گرم)</th>
+      <th>کربوهیدرات (گرم)</th>
+      <th>فیبر (گرم)</th>
+      <th>قند (گرم)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of nutritionData$ | async">
+      <td>{{ item.name }}</td>
+      <td>{{ item.calories }}</td>
+      <td>{{ item.serving_size_g }}</td>
+      <td>{{ item.fat_total_g }}</td>
+      <td>{{ item.fat_saturated_g }}</td>
+      <td>{{ item.protein_g }}</td>
+      <td>{{ item.sodium_mg }}</td>
+      <td>{{ item.potassium_mg }}</td>
+      <td>{{ item.cholesterol_mg }}</td>
+      <td>{{ item.carbohydrates_total_g }}</td>
+      <td>{{ item.fiber_g }}</td>
+      <td>{{ item.sugar_g }}</td>
+    </tr>
+  </tbody>
+</table>
+
+
+</section>
+
+  <section class="comments">
+
+    <!-- Add new comment -->
+    <div class="add-comment">
+      <h3>افزودن نظر</h3>
+      <div class="form-group comment-title">
+        <label for="comment-title">عنوان</label>
+        <input id="comment-title" [(ngModel)]="newCommentTitle" type="text" placeholder="عنوان نظر خود را وارد کنید" />
+      </div>
+      <textarea [(ngModel)]="newCommentText" placeholder="نظر خود را اینجا بنویسید..."></textarea>
+      <button (click)="submitComment()" class="btn btn-primary">ثبت نظر</button>
+    </div>
+    <h2>نظرات</h2>
+
+    <!-- Existing comments -->
+    <div *ngIf="comments$ | async as comments; else noComments">
+      <div *ngFor="let comment of comments" class="comment-card">
+        <div class="comment-header">
+          <h3>نام کاربر: {{ comment.user_name }}</h3>
+          <div>
+            <strong>{{ comment.user }}</strong>
+            <hr>
+            <div class="comment-meta">{{ comment.date | date:'short' }}</div>
+          </div>
+
+          <div>
+            <!-- <button mat-icon-button color="warn" aria-label="نپسندیدن" (click)="dislikeComment(comment)">
+              <mat-icon style="color: red;">thumb_down_off_alt</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" aria-label="پسندیدن" (click)="likeComment(comment)">
+              <mat-icon style="color: red;">thumb_up_off_alt</mat-icon>
+            </button> -->
+            <!-- @if(comment.user_id == ) -->
+            <button mat-icon-button color="warn" aria-label="حذف نظر" (click)="deleteComment(comment)">
+              <mat-icon style="color: red;">delete</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="comment-body">
+          <h4>{{ comment.title }}</h4>
+          <p>{{ comment.description }}</p>
+        </div>
+      </div>
+    </div>
+
+
+
+    <ng-template #noComments>
+      <div class="comment-body">
+        <p>هنوز نظری ثبت نشده است. اولین نفر باشید!</p>
+      </div>
+    </ng-template>
+
+    <br>
+
+  </section>
+</body>
+
+</html>

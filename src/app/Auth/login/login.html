@@ -1,0 +1,63 @@
+<p-toast></p-toast>
+
+<div class="login-page" dir="rtl">
+    <div class="login-page__image-panel">
+        <img src="assets/images/food-image.jpg" alt="تصویر پس‌زمینه ورود" class="login-page__image" />
+    </div>
+
+    <div class="login-page__form-wrapper">
+
+        <div class="login-card">
+            <div class="login-card__header">
+                <h2>
+                    خوش آمدید
+                </h2>
+            </div>
+
+            <div class="login-card__body">
+                <p class="login-card__description">
+                    لطفاً ایمیل و رمز عبور خود را وارد کنید.
+                </p>
+                <form class="example-form">
+                    <mat-form-field class="example-full-width">
+                        <mat-label>ایمیل</mat-label>
+                        <input type="email" matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher"
+                            placeholder="مثال: pat@example.com">
+                        <mat-hint>خطاها بلافاصله نمایش داده می‌شوند</mat-hint>
+                        @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
+                        <mat-error>لطفاً یک ایمیل معتبر وارد کنید</mat-error>
+                        }
+                        @if (emailFormControl.hasError('required')) {
+                        <mat-error>ایمیل <strong>الزامی</strong> است</mat-error>
+                        }
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>رمز عبور</mat-label>
+                        <input type="password" matInput [formControl]="passwordFormControl"
+                            [errorStateMatcher]="matcher" placeholder="مثال: Password123">
+                        <mat-hint>خطاها بلافاصله نمایش داده می‌شوند</mat-hint>
+                        <!-- @if (passwordFormControl.hasError('minlength')) {
+                        <mat-error>رمز عبور باید حداقل ۸ کاراکتر باشد</mat-error>
+                        } -->
+                        @if (passwordFormControl.hasError('required')) {
+                        <mat-error>رمز عبور <strong>الزامی</strong> است</mat-error>
+                        }
+                    </mat-form-field>
+                </form>
+
+                <button (click)="login()" type="button" class="login-button">
+                    ورود
+                </button>
+
+                <!-- @if (invalidLogin) {
+          <div class="login-error">
+            ایمیل یا رمز عبور اشتباه است
+          </div>
+        } -->
+            </div>
+            <div>
+                حساب کاربری ندارید؟ <a href="/auth/register">اینجا ثبت‌نام کنید</a>
+            </div>
+        </div>
+    </div>
+</div>

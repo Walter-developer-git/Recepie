@@ -1,0 +1,25 @@
+<form class="example-form" dir="rtl">
+    <mat-form-field class="example-full-width" appearance="outline">
+        <!-- <mat-label>تگ ها</mat-label> -->
+        <input type="text" placeholder="انتخاب کنید" aria-label="Tags" matInput (keydown.enter)="onEnterPressed($event)"
+            [formControl]="myControl" [value]="tagValue" [matAutocomplete]="auto" dir="rtl">
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+            (optionSelected)="onOptionSelected($event.option.value)">
+            @for (option of filteredOptions | async; track option) {
+            <mat-option [value]="option.value">{{option.name}}</mat-option>
+            }
+        </mat-autocomplete>
+        <mat-chip-grid #chipGrid aria-label="جستجو کنید" [formControl]="formControl">
+            @for (keyword of keywords; track keyword) {
+            @if(keyword) {
+            <mat-chip-row (removed)="removeKeyword(keyword)">
+                {{keyword.name}}
+                <button matChipRemove [attr.aria-label]="'remove ' + keyword">
+                    <mat-icon>cancel</mat-icon>
+                </button>
+            </mat-chip-row>
+            }
+            }
+        </mat-chip-grid>
+    </mat-form-field>
+</form>

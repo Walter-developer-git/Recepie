@@ -1,0 +1,79 @@
+<p-toast></p-toast>
+
+<div class="register-page" dir="rtl">
+  <div class="register-page__image-panel">
+    <img src="assets/images/food-image.jpg" alt="تصویر پس‌زمینه ثبت‌نام" class="register-page__image" />
+  </div>
+
+  <div class="register-page__form-wrapper">
+    <div class="register-card">
+      <div class="register-card__header">
+        <h2>ایجاد حساب کاربری</h2>
+      </div>
+
+      <div class="register-card__body">
+        <p class="register-card__description">
+          لطفاً برای ایجاد حساب کاربری خود اطلاعات را وارد کنید.
+        </p>
+
+        <form class="register-form">
+          <mat-form-field class="example-full-width">
+            <mat-label>نام</mat-label>
+            <input matInput type="text" [formControl]="firstNameFormControl" placeholder="مثال: عباس" />
+            @if (firstNameFormControl.hasError('required')) {
+              <mat-error>نام <strong>الزامی</strong> است</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <mat-label>نام خانوادگی</mat-label>
+            <input matInput type="text" [formControl]="lastNameFormControl" placeholder="مثال: عباسی" />
+            @if (lastNameFormControl.hasError('required')) {
+              <mat-error>نام خانوادگی <strong>الزامی</strong> است</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <mat-label>ایمیل</mat-label>
+            <input matInput type="email" [formControl]="emailFormControl" [errorStateMatcher]="matcher"
+              placeholder="مثال: abbas@example.com" />
+            <mat-hint>ایمیل شما هرگز به اشتراک گذاشته نمی‌شود.</mat-hint>
+            @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
+              <mat-error>لطفاً یک ایمیل معتبر وارد کنید</mat-error>
+            }
+            @if (emailFormControl.hasError('required')) {
+              <mat-error>ایمیل <strong>الزامی</strong> است</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <mat-label>رمز عبور</mat-label>
+            <input matInput type="password" [formControl]="passwordFormControl" [errorStateMatcher]="matcher"
+              placeholder="مثال: test123" />
+            <mat-hint>حداقل ۸ کاراکتر.</mat-hint>
+            @if (passwordFormControl.hasError('minlength')) {
+              <mat-error>رمز عبور باید حداقل ۸ کاراکتر باشد</mat-error>
+            }
+            @if (passwordFormControl.hasError('required')) {
+              <mat-error>رمز عبور <strong>الزامی</strong> است</mat-error>
+            }
+          </mat-form-field>
+        </form>
+
+        <button (click)="register()" type="button" class="register-button">
+          ثبت‌نام
+        </button>
+
+        <!-- @if (registrationFailed) {
+          <div class="register-error">
+            ثبت‌نام انجام نشد. لطفاً دوباره تلاش کنید.
+          </div>
+        } -->
+      </div>
+
+      <div class="register-card__footer">
+        قبلاً حساب کاربری دارید؟ <a href="/auth/login">وارد شوید</a>
+      </div>
+    </div>
+  </div>
+</div>

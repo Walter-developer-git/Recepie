@@ -1,0 +1,20 @@
+table {
+  width: 100%;
+}
+
+.container {
+  padding: 20px;
+}
+
+.chart-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); // 2 equal columns
+  gap: 20px; // space between charts
+  max-width: 1200px; // optional, center on page
+  margin: auto;
+}
+
+.chart-box {
+  width: 100%;
+  max-width: 600px;
+}

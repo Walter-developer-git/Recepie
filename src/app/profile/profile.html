@@ -1,0 +1,162 @@
+<div class="profile-container" dir="rtl" lang="fa">
+
+    <div class="profile-header">
+        <div class="profile-image-wrapper">
+            @if (profileImageSrc) {
+            <img class="profile-image" [src]="profileImageSrc" alt="تصویر پروفایل" />
+            } @else {
+            <img class="profile-image" src="assets/images/user.png" alt="تصویر پروفایل پیش‌فرض" />
+            }
+
+            <label for="imageUpload" class="upload-icon-label">
+                <mat-icon>camera_alt</mat-icon>
+            </label>
+            <input type="file" id="imageUpload" accept="image/*" style="display: none;"
+                (change)="onFileSelected($event)">
+        </div>
+        <h1 class="profile-name">{{ userName }}</h1>
+        <p class="profile-description">{{ userEmail }}</p>
+        <br>
+        @if (userService.isAdmin$ | async) {
+        <button (click)="openAdminPanel()" class="btn">ورود به پنل ادمین</button>
+        }
+    </div>
+
+    <div class="password-section">
+        <h2>مدیریت رمز عبور</h2>
+        @if(this.isReset$ | async) {
+
+        <form #passwordForm="ngForm">
+            <div class="form-group">
+                <label for="newPassword">رمز عبور جدید</label>
+                <input type="password" id="newPassword" name="newPassword" [(ngModel)]="passwordData.newPassword"
+                    required>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">تایید رمز عبور جدید</label>
+                <input type="password" id="confirmPassword" name="confirmPassword"
+                    [(ngModel)]="passwordData.confirmPassword" required>
+            </div>
+            <button (click)="resetPassword()" type="submit" class="btn" [disabled]="!passwordForm.form.valid">بازنشانی
+                رمز عبور</button>
+        </form>
+        } @else {
+        <div>
+            <h3>آیا رمز عبور خود را فراموش کرده اید؟ </h3>
+            <button (click)="openResetField()" class="btn">بله فراموش کرده ام</button>
+        </div>
+        }
+    </div>
+
+    ---
+
+    <div class="recipes-section">
+        <h2>بالا ترین امتیاز</h2>
+        @if ((userData$ | async)?.highest_rated_recipe) {
+        <div class="recipe-cards-grid">
+            <div *ngIf="(userData$ | async)?.highest_rated_recipe as recipe" (click)="openRecipe(recipe.id)"
+                class="recipe-card">
+                <div class="recipe-content">
+                    <h3>عنوان</h3>
+                    <h3>{{ (userData$ | async)?.highest_rated_recipe.title }}</h3>
+                    <div class="highest-rated-recipe">امتیاز: <p-rating [readonly]="true"
+                            [(ngModel)]="this.highRateScore" />
+                    </div>
+                    <!-- <p class="recipe-description">{{ item.description }}</p> -->
+                </div>
+            </div>
+        </div>
+        } @else {
+        <ng-template #noFavorites>
+            <p>هیچ دستور پخت مورد علاقه‌ای ثبت نشده است.</p>
+        </ng-template>
+        }
+    </div>
+
+    <div class="recipes-section">
+        <h2>محبوب ترین دستور غذا</h2>
+        @if ((userData$ | async)?.most_popular_recipe) {
+        <div class="recipe-cards-grid">
+            <div *ngIf="(userData$ | async)?.highest_rated_recipe as recipe" (click)="openRecipe(recipe.id)"
+                class="recipe-card">
+                <div class="recipe-content">
+                    <h3>عنوان</h3>
+                    <h3>{{ (userData$ | async)?.most_popular_recipe.title }}</h3>
+                    <div class="highest-rated-recipe"> تعداد: {{ highLikes }} <mat-icon class="like-icon"
+                            color="warn">favorite</mat-icon>
+                    </div>
+                    <!-- <p class="recipe-description">{{ item.description }}</p> -->
+                </div>
+            </div>
+        </div>
+        } @else {
+        <ng-template #noFavorites>
+            <p>هیچ دستور پخت مورد علاقه‌ای ثبت نشده است.</p>
+        </ng-template>
+        }
+    </div>
+
+    <div class="recipes-section">
+        <h2>دستور پخت‌های شما : {{ stats?.total_recipes }} </h2>
+
+        @if ((userData$ | async)?.user?.recipes) {
+        <div class="recipe-cards-grid">
+            @for (item of (userData$ | async)?.user?.recipes; track item) {
+            <div *ngIf="(userData$ | async)?.highest_rated_recipe as recipe" (click)="openRecipe(recipe.id)"
+                class="recipe-card">
+                <div class="recipe-content">
+                    <h3>{{ item.title.length > 10 ? (item.title | slice:0:20) + '...' : item.title }}</h3>
+                    <p class="recipe-rating">امتیاز: 
+                        @if(item.ratings.length > 0 && item.ratings[0].score) {
+
+                            <p-rating [readonly]="true"
+                            [(ngModel)]="item.ratings[0].score" />
+                        } @else {
+                            <p-rating [readonly]="true"
+                                [ngModel]="0" />
+                        }
+                    </p>
+                    <p class="recipe-description">{{ item.text }}</p>
+                    <p class="recipe-rating">لایک ها: {{ item.favorites.length }}</p>
+                        @for (tag of item.tags; track tag) {
+                            <span (click)="clickTag($event, tag)" class="tag-badge">{{ tag.name }}</span>
+                        }
+                        |
+                        @for (category of item.categories; track category) {
+                            <span (click)="clickCategory($event, category)" class="tag-badge">{{ category.name }}</span>
+                        }
+                </div>
+            </div>
+            }
+        </div>
+        } @else {
+        <ng-template #noFavorites>
+            <p>هیچ دستور پخت مورد علاقه‌ای ثبت نشده است.</p>
+        </ng-template>
+        }
+    </div>
+
+
+    <div class="recipes-section">
+        <h2>نظرات شما : {{ stats?.total_comments }}</h2>
+        @if ((userData$ | async)?.user?.comments) {
+        <div class="recipe-cards-grid">
+            @for (item of (userData$ | async)?.user?.comments; track item) {
+            <div class="recipe-card">
+                <div class="recipe-content">
+                    <h3>عنوان</h3>
+                    <h3>{{ item.title }}</h3>
+                    <p class="recipe-rating">امتیاز: {{ item.likes }}</p>
+                    <p class="recipe-description">{{ item.description }}</p>
+                </div>
+            </div>
+            }
+        </div>
+        } @else {
+        <ng-template #noFavorites>
+            <p>هیچ دستور پخت مورد علاقه‌ای ثبت نشده است.</p>
+        </ng-template>
+        }
+    </div>
+
+</div>

@@ -1,0 +1,158 @@
+<div class="hero">
+  <img src="assets/images/food-image.jpg" alt="Food Background" class="hero__image" />
+  <div class="hero__text">
+    <h1>Simply Recipes</h1>
+    <p>No Fluff, Just Recipes</p>
+  </div>
+</div>
+
+<div class="container">
+  <aside class="sidebar">
+<form [formGroup]="form" (ngSubmit)="search()">
+  <div class="form-group">
+    <label for="title">عنوان*</label>
+    <input type="text" id="title" formControlName="title" placeholder="جستجوی عنوان">
+  </div>
+
+  <div class="form-group">
+    <label for="ingredient">مواد اولیه*</label>
+    <input type="text" id="ingredient" formControlName="ingredient" placeholder="جستجوی عنوان">
+  </div>
+
+
+
+  <multi-select-autocomplete (addedTag)="selectedTagAdded($event)"></multi-select-autocomplete>
+
+  <mat-form-field appearance="outline">
+  <mat-label>مرتب‌سازی</mat-label>
+  <mat-select formControlName="sortOrder">
+    <mat-option *ngFor="let option of sortOptions" [value]="option.value">
+      {{ option.label }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+  <div class="slider-container">
+
+کالری: {{ calorieRange.min }} - {{ calorieRange.max }}
+<mat-slider [min]="0" [max]="maxValue" step="5" showTickMarks range style="direction: ltr;">
+  <input matSliderStartThumb [value]="calorieRange.min" style="direction: ltr;"
+         (input)="onRangeChange($event, 'calorieRange', 'min')">
+  <input matSliderEndThumb [value]="calorieRange.max" style="direction: ltr;"
+         (input)="onRangeChange($event, 'calorieRange', 'max')">
+</mat-slider>
+
+پروتئین: {{ proteinRange.min }} - {{ proteinRange.max }}
+<mat-slider [min]="0" [max]="maxValue" step="5" showTickMarks range style="direction: ltr;">
+  <input matSliderStartThumb [value]="proteinRange.min" style="direction: ltr;"
+         (input)="onRangeChange($event, 'proteinRange', 'min')">
+  <input matSliderEndThumb [value]="proteinRange.max" style="direction: ltr;"
+         (input)="onRangeChange($event, 'proteinRange', 'max')">
+</mat-slider>
+
+ارزش غذایی: {{ nutritionalRange.min }} - {{ nutritionalRange.max }}
+<mat-slider [min]="0" [max]="maxValue" step="5" showTickMarks range style="direction: ltr;">
+  <input matSliderStartThumb [value]="nutritionalRange.min" style="direction: ltr;"
+         (input)="onRangeChange($event, 'nutritionalRange', 'min')">
+  <input matSliderEndThumb [value]="nutritionalRange.max" style="direction: ltr;"
+         (input)="onRangeChange($event, 'nutritionalRange', 'max')">
+</mat-slider>
+
+کربوهیدرات: {{ carbohydrateRange.min }} - {{ carbohydrateRange.max }}
+<mat-slider [min]="0" [max]="maxValue" step="5" showTickMarks range style="direction: ltr;">
+  <input matSliderStartThumb [value]="carbohydrateRange.min" style="direction: ltr;"
+         (input)="onRangeChange($event, 'carbohydrateRange', 'min')">
+  <input matSliderEndThumb [value]="carbohydrateRange.max" style="direction: ltr;"
+         (input)="onRangeChange($event, 'carbohydrateRange', 'max')">
+</mat-slider>
+
+چربی: {{ fatRange.min }} - {{ fatRange.max }}
+<mat-slider [min]="0" [max]="maxValue" step="5" showTickMarks range style="direction: ltr;">
+  <input matSliderStartThumb [value]="fatRange.min" style="direction: ltr;"
+         (input)="onRangeChange($event, 'fatRange', 'min')">
+  <input matSliderEndThumb [value]="fatRange.max" style="direction: ltr;"
+         (input)="onRangeChange($event, 'fatRange', 'max')">
+</mat-slider>
+
+شکر: {{ sugarRange.min }} - {{ sugarRange.max }}
+<mat-slider [min]="0" [max]="maxValue" step="5" showTickMarks range style="direction: ltr;">
+  <input matSliderStartThumb [value]="sugarRange.min" style="direction: ltr;"
+         (input)="onRangeChange($event, 'sugarRange', 'min')">
+  <input matSliderEndThumb [value]="sugarRange.max" style="direction: ltr;"
+         (input)="onRangeChange($event, 'sugarRange', 'max')">
+</mat-slider>
+
+فیبر: {{ fiberRange.min }} - {{ fiberRange.max }}
+<mat-slider [min]="0" [max]="maxValue" step="5" showTickMarks range style="direction: ltr;">
+  <input matSliderStartThumb [value]="fiberRange.min" style="direction: ltr;"
+         (input)="onRangeChange($event, 'fiberRange', 'min')">
+  <input matSliderEndThumb [value]="fiberRange.max" style="direction: ltr;"
+         (input)="onRangeChange($event, 'fiberRange', 'max')">
+</mat-slider>
+
+
+</div>
+
+<div class="filter-container">
+  <button (click)="resetFilter()" type="submit" class="btn-red">ریست کردن فیلتر</button>
+  <button type="submit" class="btn-green">فیلتر</button>
+</div>
+
+</form>
+
+  </aside>
+
+  <section class="recipe-grid">
+    @if(notFound$ | async) {
+      <div class="not-found">
+        !اطلاعاتی یافت نشد
+      </div>
+    }
+    <ng-container *ngFor="let item of recipeList$ | async">
+    <div (click)="openRecipie(item)" class="recipe-card">
+      @if (item.imageUrl) {
+        <img *ngIf="item.imageUrl" [src]="item.imageUrl" alt="{{ item.title }}" />
+      } @else {
+        <img src="assets/images/omlet.jpg" alt="Carne Asada" />
+      }
+      <div class="card-details">
+        <div>
+          <h4>{{item.title}}</h4>
+          <div>
+            <p class="meta">Created: {{ item.created_at | date:'shortTime' }}</p>
+          </div>
+        </div>
+<!-- <button class="favourite-icon" mat-icon-button aria-label="Like recipe" (click)="likeRecipie($event,item)">
+  <mat-icon>{{ isLiked ? 'favorite' : 'favorite_border' }}</mat-icon>
+</button> -->
+      </div>
+    </div>
+        </ng-container>
+  </section>
+</div>
+
+<div class="pagination">
+  <button
+    mat-flat-button
+    color="accent"
+    class="pagination-btn"
+    (click)="prevPage()"
+    [disabled]="currentPage === 0"
+  >
+    ◀ قبلی
+  </button>
+
+  <span class="page-indicator">
+    صفحه {{ totalPages }} / {{ currentPage + 1 }} 
+  </span>
+
+  <button
+    mat-flat-button
+    color="accent"
+    class="pagination-btn"
+    (click)="nextPage()"
+    [disabled]="(currentPage + 1) == totalPages || totalPages == 0"
+  >
+    بعدی ▶
+  </button>
+</div>

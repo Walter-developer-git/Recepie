@@ -1,0 +1,232 @@
+    /*
+     * Base and Container Styles
+     * These styles set up the main layout and ensure responsiveness.
+     */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f7f6;
+        direction: rtl;
+        margin: 0;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 1.5rem;
+    }
+
+    /*
+     * Desktop Layout
+     * For screens wider than 768px, switch to a side-by-side layout.
+     */
+    @media (min-width: 768px) {
+        .container {
+            flex-direction: row;
+            align-items: flex-start;
+        }
+
+        .sidebar {
+            flex: 0 0 250px; /* Gives the sidebar a fixed width */
+        }
+
+        .content-wrapper {
+            flex: 1; /* Allows the content to fill the remaining space */
+        }
+    }
+
+    /*
+     * Sidebar and Form Styles
+     * This styles the container for the search form.
+     */
+    .sidebar {
+        padding: 20px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        box-sizing: border-box;
+        margin-top: 5%;
+    }
+
+    /* Form Styles from original code */
+    .form-group {
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-group label {
+        font-weight: bold;
+        margin-bottom: 6px;
+        color: #333;
+    }
+
+    .form-group input {
+        padding: 10px 14px;
+        font-size: 14px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        transition: border-color 0.3s;
+    }
+
+    .form-group input:focus {
+        border-color: #4caf50;
+        outline: none;
+    }
+
+    multi-select-autocomplete {
+        display: block;
+        margin-bottom: 20px;
+    }
+
+    mat-form-field {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    mat-form-field.mat-focused .mat-form-field-outline {
+        color: #4caf50;
+        border-color: #4caf50;
+    }
+
+    button.btn-green {
+        background-color: #4caf50;
+        color: #fff;
+        font-weight: bold;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    button.btn-green:hover {
+        background-color: #45a049;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+
+    /*
+     * Main Content and Grid Styles
+     * These styles handle the layout for the recipe cards.
+     */
+    .content-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .form-actions .btn-primary {
+        background-color: #4caf50;
+        color: #fff;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background 0.2s;
+    }
+
+    .form-actions .btn-primary:hover {
+        background-color: #4caf4fc4;
+    }
+
+    .recipe-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1rem;
+    }
+
+    .recipe-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 1rem;
+        cursor: pointer;
+        border-radius: 1rem;
+        background-color: #f9f9f9;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .recipe-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    .recipe-card .recipe-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .recipe-card .card-actions-container {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .recipe-card .card-actions-container .btn-icon {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.2s;
+    }
+
+    .recipe-card .card-actions-container .btn-icon mat-icon {
+        font-size: 1.25rem;
+        color: #555;
+    }
+
+    .recipe-card .card-actions-container .btn-icon:hover mat-icon {
+        color: #60b53f;
+    }
+
+    /*
+     * Pagination Styles
+     * These styles control the look and feel of the pagination buttons.
+     */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+        margin-top: 20px;
+    }
+
+    .pagination-btn {
+        font-weight: 600;
+        font-size: 14px;
+        padding: 8px 20px;
+        border-radius: 50px;
+        text-transform: none;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .pagination-btn:hover:not([disabled]) {
+        background-color: #ff9800;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .pagination-btn[disabled] {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .page-indicator {
+        font-size: 15px;
+        font-weight: 500;
+        color: #555;
+    }

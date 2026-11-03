@@ -1,0 +1,6 @@
+{
+  "name": "Recipe Hub",
+  "description": "Discover, create, and share delicious recipes with nutrition filters, ratings, and categories.",
+  "permissions": [],
+  "capabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

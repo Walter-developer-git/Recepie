@@ -1,0 +1,46 @@
+<!-- ingredient-form.component.html -->
+<form [formGroup]="ingredientForm" class="ingredient-form" dir="rtl">
+  <h2>{{ isEditMode ? 'ویرایش مرحله' : 'افزودن مرحله' }}</h2>
+
+  <div class="form-group">
+    <div class="label-container">
+      <label for="text">متن:*</label>
+    </div>
+    <input type="text" id="text" formControlName="text" placeholder="مرحله"
+      [class.invalid]="text.invalid && (text.dirty || text.touched)">
+    <div class="validation-error" *ngIf="text.invalid && (text.dirty || text.touched)">
+      <span *ngIf="text.errors?.['required']">متن مرحله الزامی است</span>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button type="button" class="btn btn-secondary" (click)="onCancel()">انصراف</button>
+    <button (click)="onSubmit()" type="submit" class="btn btn-primary" [disabled]="ingredientForm.invalid">
+      {{ isEditMode ? 'بروزرسانی' : 'افزودن' }} مرحله
+    </button>
+  </div>
+
+  <ng-container *ngIf="items.length == 0">
+    <div class="ingredient-list">
+      <div class="ingredient-info">
+        <span class="ingredient-title">هنوز مرحله‌ای اضافه نشده است</span>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="items?.length != 0">
+    <ng-container *ngFor="let item of items; let i = index">
+      <div class="ingredient-list">
+        <div class="ingredient-info">
+          <span class="ingredient-title">مرحله: {{ i + 1 }}</span>
+          <span class="ingredient-quantity">{{ item?.text }}</span>
+        </div>
+        <button (click)="deleteItem(i)" 
+          style="border: none; color: red; cursor: pointer; background-color: transparent;" 
+          mat-icon-button color="warn" aria-label="حذف مرحله">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </ng-container>
+  </ng-container>
+</form>

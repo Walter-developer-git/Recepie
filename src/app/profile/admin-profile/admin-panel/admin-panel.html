@@ -1,0 +1,165 @@
+<p-toast></p-toast>
+<div class="container">
+  <mat-tab-group (selectedTabChange)="tabChanged($event)" dir="rtl" mat-stretch-tabs="false" mat-align-tabs="start">
+    <mat-tab label="داشبورد">
+<br>
+        <mat-form-field appearance="outline">
+  <mat-label>بر اساس:</mat-label>
+  <mat-select formControlName="sortOrder">
+    <mat-option *ngFor="let option of filterCharts" (click)="loadCharts(option.value)" [value]="option.value">
+      {{ option.label }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+
+<div class="chart-container">
+<div class="chart-box">
+  <canvas id="lineChart" style="width: 600px;"></canvas>
+</div>
+
+<div class="chart-box">
+  <canvas id="lineChart1" style="width: 600px;"></canvas>
+</div>
+
+<div class="chart-box">
+  <canvas id="lineChart2" style="width: 600px;"></canvas>
+</div>
+
+<div class="chart-box">
+  <canvas id="lineChart3" style="width: 600px;"></canvas>
+</div>
+
+</div>
+
+    </mat-tab>
+    <mat-tab label="کاربران">
+<div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSourceUsers" class="mat-elevation-z2 w-full">
+
+          <!-- Title Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> نام کاربر </th>
+            <td mat-cell *matCellDef="let element"> {{ element.name }} </td>
+          </ng-container>
+
+          <!-- Text Column -->
+          <ng-container matColumnDef="last_name">
+            <th mat-header-cell *matHeaderCellDef> فامیل </th>
+            <td mat-cell *matCellDef="let element"> {{ element.last_name }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef> ایمیل </th>
+            <td mat-cell *matCellDef="let element"> {{ element.email }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef> نقش </th>
+            <td mat-cell *matCellDef="let element">
+              @if(element.role == 'admin') {
+                ادمین 
+              } @else { کاربر }
+               </td>
+          </ng-container>
+
+          <!-- Actions Column -->
+
+          <!-- Header + Rows -->
+          <tr mat-header-row *matHeaderRowDef="displayedUserColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedUserColumns;"></tr>
+        </table>
+
+        <!-- Paginator -->
+        <mat-paginator [pageSize]="20" [length]="totalUsers" (page)="paginationUsers($event)">
+        </mat-paginator>
+
+        <!-- <mat-paginator [pageSize]="20"
+                 showFirstLastButtons
+                 (page)="pagination($event)"
+                 [length]="totalRecpie"
+                 aria-label="Select page of periodic elements">
+  </mat-paginator> -->
+      </div>
+    </mat-tab>
+    <mat-tab label="دستور پخت ها">
+<div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z2 w-full">
+
+          <!-- Title Column -->
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef> نام دستور پخت </th>
+            <td mat-cell *matCellDef="let element"> {{ element.title }} </td>
+          </ng-container>
+
+          <!-- Text Column -->
+          <ng-container matColumnDef="text">
+            <th mat-header-cell *matHeaderCellDef> توضیحات </th>
+            <td mat-cell *matCellDef="let element"> {{ element.text }} </td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> عملیات </th>
+            <td mat-cell *matCellDef="let element"> <button (click)="deleteElement(element)"
+                style="border: none; color: #f44336; cursor: pointer; background-color: transparent;" mat-icon-button
+                color="warn" aria-label="Delete Ingredient"> <mat-icon>delete</mat-icon> </button> <button (click)="edit(element)"
+                style="border: none; color: #6c63ff; cursor: pointer; background-color: transparent;" mat-icon-button
+                color="warn" aria-label="Delete Ingredient"> <mat-icon>edit</mat-icon> </button> </td>
+          </ng-container>
+
+          <!-- Header + Rows -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <!-- Paginator -->
+        <mat-paginator [pageSize]="20" [length]="totalRecipie" (page)="paginationRecpie($event)">
+        </mat-paginator>
+
+        <!-- <mat-paginator [pageSize]="20"
+                 showFirstLastButtons
+                 (page)="pagination($event)"
+                 [length]="totalRecpie"
+                 aria-label="Select page of periodic elements">
+  </mat-paginator> -->
+      </div>
+    </mat-tab>
+    <mat-tab label="دسته بندی ها">
+      <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSourceCategory" class="mat-elevation-z2 w-full">
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> دسته بندی ها </th>
+            <td mat-cell *matCellDef="let element"> {{ element.name }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> عملیات </th>
+            <td mat-cell *matCellDef="let element"> <button (click)="deleteElementCategory(element)"
+                style="border: none; color: #f44336; cursor: pointer; background-color: transparent;" mat-icon-button
+                color="warn" aria-label="Delete Ingredient"> <mat-icon>delete</mat-icon> </button> <button (click)="editCategory(element)"
+                style="border: none; color: #6c63ff; cursor: pointer; background-color: transparent;" mat-icon-button
+                color="warn" aria-label="Delete Ingredient"> <mat-icon>edit</mat-icon> </button> </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedCategoryColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedCategoryColumns;"></tr>
+        </table>
+
+        <!-- Paginator -->
+        <mat-paginator [pageSize]="20" [length]="totalCategory" (page)="paginationCategory($event)">
+        </mat-paginator>
+
+
+
+        <!-- <mat-paginator [pageSize]="20"
+                 showFirstLastButtons
+                 (page)="pagination($event)"
+                 [length]="totalRecpie"
+                 aria-label="Select page of periodic elements">
+  </mat-paginator> -->
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

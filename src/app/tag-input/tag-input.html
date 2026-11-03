@@ -1,0 +1,21 @@
+<div class="example-button-container">
+<mat-form-field appearance="outline" class="example-form-field" dir="rtl">
+  <!-- <mat-label>Create New Tag</mat-label> -->
+  <mat-chip-grid #chipGrid aria-label="Enter keywords" [formControl]="formControl">
+    @for (keyword of keywords(); track keyword) {
+      @if(keyword) {
+        <mat-chip-row (removed)="removeKeyword(keyword)">
+          {{keyword}}
+          <button matChipRemove [attr.aria-label]="'remove ' + keyword">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      }
+    }
+  </mat-chip-grid>
+  <input
+    placeholder="تگ جدید"
+    [matChipInputFor]="chipGrid"
+    (matChipInputTokenEnd)="add($event)"
+  />
+</mat-form-field>

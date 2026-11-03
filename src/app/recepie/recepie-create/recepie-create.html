@@ -1,0 +1,71 @@
+<!-- recipe-form.component.html -->
+ <p-toast></p-toast>
+<form [formGroup]="recipeForm" class="recipe-form">
+  <h2>{{ isEditMode ? 'ویرایش دستور پخت' : 'ایجاد دستور پخت جدید' }}</h2>
+
+  <!-- بخش اطلاعات پایه -->
+  <div class="form-section">
+    <h3>اطلاعات پایه</h3>
+
+    <div class="form-group">
+      <label for="title">عنوان*</label>
+      <input type="text" id="title" formControlName="title" placeholder="مثال : کیک"
+        [class.invalid]="title.invalid && (title.dirty || title.touched)">
+      <div class="validation-error" *ngIf="title.invalid && (title.dirty || title.touched)">
+        <span *ngIf="title.errors?.['required']">وارد کردن عنوان دستور پخت الزامی است</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="text">دستورالعمل‌ها*</label>
+      <textarea id="text" formControlName="text" rows="8" placeholder="دستور العمل را وارید کنید"
+        [class.invalid]="text.invalid && (text.dirty || text.touched)"></textarea>
+      <div class="validation-error" *ngIf="text.invalid && (text.dirty || text.touched)">
+        <span *ngIf="text.errors?.['required']">وارد کردن دستورالعمل‌ها الزامی است</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- بخش اطلاعات تکمیلی -->
+  <div class="form-section">
+    <h3>اطلاعات تکمیلی</h3>
+    <div class="tags-container">
+<mat-form-field appearance="outline" class="example-full-width" dir="rtl">
+  <mat-select formControlName="category_ids" multiple placeholder="یک یا چند دسته را انتخاب کنید" class="rtl-select">
+    <mat-option *ngFor="let category of categories$ | async" [value]="category.ID" class="rtl-option">
+      {{ category.name }}
+    </mat-option>
+  </mat-select>
+  <mat-error class="rtl-label">
+    حداقل یک دسته‌بندی را انتخاب کنید
+  </mat-error>
+</mat-form-field>
+
+
+    <multi-select-autocomplete [keywords]="tagsData" (addedTag)="selectedTagAdded($event)"></multi-select-autocomplete>
+</div>
+    <tag-input (addedTag)="tagAdded($event)"></tag-input>
+  </div>
+
+  <!-- آپلود تصویر -->
+  <div class="form-group file-upload">
+    <label for="imageUrl" class="file-label">بارگذاری تصویر</label>
+    <div class="file-input-wrapper">
+      <input dir="rtl" type="file" id="imageUrl" (change)="onFileSelected($event)" class="file-input" />
+      <span class="file-name">{{ selectedFile?.name || 'هیچ فایلی انتخاب نشده است' }}</span>
+    </div>
+  </div>
+
+  <app-ingredient-form [items]="ingredients" (buttonClicked)="getList($event)"></app-ingredient-form>
+  <br>
+  <app-steps [items]="steps" (buttonClicked)="getSteps($event)"></app-steps>
+  <br>
+
+  <!-- عملیات فرم -->
+  <div class="form-actions">
+    <button type="button" class="btn btn-secondary" (click)="onCancel()">لغو</button>
+    <button (click)="onSubmit()" type="submit" class="btn btn-primary" [disabled]="recipeForm.invalid">
+      {{ isEditMode ? 'به‌روزرسانی' : 'ایجاد' }} دستور پخت
+    </button>
+  </div>
+</form>

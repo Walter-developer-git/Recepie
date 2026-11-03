@@ -1,0 +1,35 @@
+<header class="navbar">
+  <div class="logo"><span>Simply</span>Recipes</div>
+
+  <button class="mobile-toggle" (click)="toggleNav()">
+    {{ navOpen ? '✖' : '☰' }}
+  </button>
+
+  <nav class="nav-links" [ngClass]="{ open: navOpen }">
+    <a href="recepie/recepie-list" class="nav-link">خانه</a>
+    <!-- <a href="recepie/recepie-list" class="nav-link">مراحل</a> -->
+    <!-- <a href="/tags" class="nav-link">برچسب‌ها</a> -->
+    <a href="/category/category-list" class="nav-link">دسته‌بندی‌ها</a>
+    <a href="/auth/login" (click)="logout()" class="nav-link">خروج</a>
+  </nav>
+
+  <div class="action-buttons" [ngClass]="{ open: navOpen }">
+    @if(!showCreateRecipie) {
+      <a href="recepie/recepie-create" class="btn btn-primary">ایجاد برنامه غذایی</a>
+    }
+
+    <!-- پروفایل کاربر -->
+<div (click)="goProfilePage()" class="profile">
+  @if(userImage) {
+    <img class="avatar" [src]="userImage" alt="آواتار پروفایل" />
+  } @else {
+    <div class="avatar placeholder">
+      <mat-icon>face</mat-icon>
+    </div>
+  }
+  <span class="username">{{ userName }}</span>
+</div>
+</div>
+</header>
+
+<router-outlet (activate)="onActivate($event)"></router-outlet>
